@@ -1,4 +1,4 @@
-using Cuckoo, Test
+using CuckooFilters, Documenter, Test
 
 @testset "CuckooFilter tests" begin
     @testset "Insertion tests" begin
@@ -6,7 +6,21 @@ using Cuckoo, Test
         insert!(filter, b"hello, world!")
         insert!(filter, b"goodbye!")
 
-        @assert b"hello, world!" ∈ filter
-        @assert b"goodbye!" ∈ filter
+        @test b"hello, world!" ∈ filter
+        @test b"goodbye!" ∈ filter
     end
+
+    @testset "Deletion tests" begin
+        filter = CuckooFilter()
+        insert!(filter, b"hello, world!")
+        insert!(filter, b"goodbye!")
+        delete!(filter, b"hello, world!")
+
+        @test b"hello, world!" ∉ filter
+        @test b"goodbye!" ∈ filter
+    end
+end
+
+@testset "CuckooFilter doctests" begin
+    doctest(CuckooFilters)
 end

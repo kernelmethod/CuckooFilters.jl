@@ -2,3 +2,7 @@ name = "CuckooFilters"
 uuid = "13e76a09-ace0-427b-b116-0bbf93e0d417"
 authors = ["kernelmethod <17100608+kernelmethod@users.noreply.github.com>"]
 version = "0.1.0"
+
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
