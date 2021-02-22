@@ -43,6 +43,41 @@ using CuckooFilters, Documenter, Test
     end
 end
 
+@testset "CuckooFilter with custom type" begin
+    # Test operations on CuckooFilter using a custom type that supports the
+    # fingerprint and fingerprint_type methods
+    struct Foo
+        x::Int64
+        y::Int64
+    end
+
+    CuckooFilters.fingerprint(f::Foo) = UInt32((f.x ⊻ f.y) & 0xffff)
+    CuckooFilters.fingerprint_type(::Type{Foo}) = UInt32
+
+    @testset "Insertion tests" begin
+        filter = CuckooFilter{Foo}()
+        @test Foo(1, 2) ∉ filter
+        @test Foo(2, 3) ∉ filter
+        @test insert!(filter, Foo(1, 2))
+        @test insert!(filter, Foo(2, 3))
+        @test Foo(1, 2) ∈ filter
+        @test Foo(2, 3) ∈ filter
+
+        # Should not be able to insert another type into the CuckooFilter
+        @test_throws MethodError insert!(filter, 5)
+    end
+
+    @testset "Deletion tests" begin
+        filter = CuckooFilter{Foo}()
+        @test Foo(-5, 18) ∉ filter
+        @test delete!(filter, Foo(-5, 18)) == false
+        @test insert!(filter, Foo(-5, 18))
+        @test Foo(-5, 18) ∈ filter
+        @test delete!(filter, Foo(-5, 18))
+        @test Foo(-5, 18) ∉ filter
+    end
+end
+
 @testset "CuckooFilter doctests" begin
     doctest(CuckooFilters)
 end
