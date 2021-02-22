@@ -8,5 +8,6 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/kernelmethod/CuckooFilters.jl.git"
+    repo = "github.com/kernelmethod/CuckooFilters.jl.git",
+    devbranch = "main",
 )
