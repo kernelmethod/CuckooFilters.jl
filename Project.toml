@@ -1,0 +1,4 @@
+name = "CuckooFilters"
+uuid = "13e76a09-ace0-427b-b116-0bbf93e0d417"
+authors = ["kernelmethod <17100608+kernelmethod@users.noreply.github.com>"]
+version = "0.1.0"
