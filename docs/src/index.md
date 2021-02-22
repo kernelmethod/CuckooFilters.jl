@@ -7,13 +7,13 @@ You can add this package to your Julia project with
 ```julia
 using Pkg
 
-Pkg.add(url="https://github.com/kernelmethod/CuckooFilters.jl", rev="master")
+Pkg.add(url="https://github.com/kernelmethod/CuckooFilters.jl", rev="main")
 ```
 
 Alternatively, if you're using the Julia REPL, you can add it with
 
 ```julia
-pkg> add https://github.com/kernelmethod/CuckooFilters.jl#master
+pkg> add https://github.com/kernelmethod/CuckooFilters.jl#main
 ```
 
 ## Usage
