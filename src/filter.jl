@@ -1,20 +1,47 @@
 # Definition of CuckooFilter and associated methods
 
-struct CuckooFilter{F}
+"""
+    CuckooFilter{F}
+
+A cuckoo filter. `F` is the type of fingerprint used by the filter (defaults
+to `UInt8`).
+
+# Examples
+
+```jldoctest; setup = :(using CuckooFilters)
+julia> filter = CuckooFilter{AbstractVector{UInt8}}();
+
+julia> b"hello, world!" ∈ filter
+false
+
+julia> insert!(filter, b"hello, world!")
+true
+
+julia> b"hello, world!" ∈ filter
+true
+
+julia> delete!(filter, b"hello, world!")
+true
+
+julia> b"hello, world!" ∈ filter
+false
+```
+"""
+struct CuckooFilter{T,F}
     buckets :: Array{Bucket{F},1}
     max_bucket_kicks :: Int64
     max_bucket_size :: Int64
 end
 
-CuckooFilter() = CuckooFilter{UInt8}()
+CuckooFilter{T}() where T = CuckooFilter{T, fingerprint_type(T)}()
 
-function CuckooFilter{F}(;
+function CuckooFilter{T,F}(;
     n_buckets = 1000,
     max_bucket_kicks = 100,
     max_bucket_size = 4
-) where F
+) where {T,F}
     buckets = [Bucket{F}() for i = 1:n_buckets]
-    CuckooFilter{F}(buckets, 100, 4)
+    CuckooFilter{T,F}(buckets, 100, 4)
 end
 
 function getbucket(filter, i)
@@ -25,7 +52,11 @@ end
 
 insert_unique!(filter::CuckooFilter, key) = insert!(filter, key, true)
 
-function Base.insert!(filter::CuckooFilter, key, unique = false)
+function Base.insert!(
+    filter::CuckooFilter{T},
+    key::T,
+    unique = false
+) where T
     if unique && key ∈ filter
         return false
     end
@@ -76,7 +107,7 @@ function Base.insert!(filter::CuckooFilter, key, unique = false)
     error("Cuckoo filter is full")
 end
 
-function Base.delete!(filter::CuckooFilter, key)
+function Base.delete!(filter::CuckooFilter{T}, key::T) where T
     # Delete the key from its first possible bucket if it is inside
     # of that bucket
     f = fingerprint(key)
@@ -93,7 +124,7 @@ function Base.delete!(filter::CuckooFilter, key)
     delete!(b₂, f)
 end
 
-function Base.in(key, filter::CuckooFilter)
+function Base.in(key::T, filter::CuckooFilter{T}) where T
     # Check whether the key's fingerprint is in its first possible
     # bucket
     f = fingerprint(key)

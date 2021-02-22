@@ -2,7 +2,7 @@ using CuckooFilters, Documenter, Test
 
 @testset "CuckooFilter tests" begin
     @testset "Insertion tests" begin
-        filter = CuckooFilter()
+        filter = CuckooFilter{AbstractVector{UInt8}}()
         @test b"hello, world!" ∉ filter
         @test b"goodbye!" ∉ filter
 
@@ -13,7 +13,7 @@ using CuckooFilters, Documenter, Test
         @test b"hello, world" ∉ filter
         @test b"goodbye!" ∈ filter
 
-        filter = CuckooFilter()
+        filter = CuckooFilter{Int64}()
         for ii = 1:256
             insert!(filter, ii)
         end
@@ -22,7 +22,7 @@ using CuckooFilters, Documenter, Test
     end
 
     @testset "Unique insertion tests" begin
-        filter = CuckooFilter()
+        filter = CuckooFilter{AbstractVector{UInt8}}()
         @test insert_unique!(filter, b"hello, world!")
         @test b"hello, world!" ∈ filter
 
@@ -33,7 +33,7 @@ using CuckooFilters, Documenter, Test
     end
 
     @testset "Deletion tests" begin
-        filter = CuckooFilter()
+        filter = CuckooFilter{AbstractVector{UInt8}}()
         insert!(filter, b"hello, world!")
         insert!(filter, b"goodbye!")
         delete!(filter, b"hello, world!")
