@@ -3,6 +3,10 @@
 [![Stable docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://kernelmethod.github.io/CuckooFilters.jl/stable/)
 [![Dev docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://kernelmethod.github.io/CuckooFilters.jl/dev/)
 
+**NOTE:** development is no longer occuring on this repository. If you're
+looking for a cuckoo filter implementation for Julia, you should check out
+[Probably.jl](https://github.com/jakobnissen/Probably.jl).
+
 A [cuckoo filter](https://wikipedia.org/wiki/Cuckoo_filter) is a space-efficient
 probabilistic data structure used for determining approximate set membership. A
 `CuckooFilter` can be used in place of a `Set` or similar data structure while
